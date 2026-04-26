@@ -1,189 +1,188 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>募集登録</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      background: #f5f6f8;
-      color: #111;
-    }
-    .wrap {
-      max-width: 560px;
-      margin: 24px auto;
-      background: #fff;
-      border-radius: 18px;
-      padding: 24px 22px 28px;
-      box-sizing: border-box;
-    }
-    h1 {
-      font-size: 30px;
-      margin: 0 0 24px;
-    }
-    .section {
-      margin-bottom: 18px;
-    }
-    .label {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .chip {
-      border: 2px solid #ccc;
-      background: #eee;
-      color: #2580ff;
-      border-radius: 999px;
-      padding: 12px 18px;
-      font-size: 17px;
-      cursor: pointer;
-    }
-    .chip.active {
-      background: #2f55d4;
-      color: #fff;
-    }
-    input, textarea {
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 16px;
-      margin-top: 8px;
-    }
-    textarea {
-      min-height: 90px;
-    }
-    .note {
-      color: #666;
-      font-size: 15px;
-      line-height: 1.6;
-      margin-top: 14px;
-    }
-    button {
-      width: 100%;
-      border: none;
-      background: #2f55d4;
-      color: #fff;
-      font-size: 22px;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 18px;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basket Match</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:#f4f6f8;color:#111}
+header{position:sticky;top:0;background:#fff;padding:16px;border-bottom:1px solid #ddd;z-index:10}
+h1{margin:0;font-size:24px}
+.tabs{display:flex;gap:8px;margin-top:12px}
+.tab{flex:1;text-align:center;padding:10px;border-radius:999px;background:#eee;color:#2878ff;font-weight:700}
+.tab.active{background:#2f55d4;color:#fff}
+.page{display:none;padding:16px}
+.page.active{display:block}
+.card{background:#fff;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.title{font-size:22px;font-weight:800;margin-bottom:8px}
+.row{font-size:15px;color:#555;margin:5px 0}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.badge{background:#eef2ff;color:#2f55d4;border-radius:999px;padding:7px 12px;font-size:14px;font-weight:700}
+.trust{font-size:18px;color:#f5a400;font-weight:800}
+button{width:100%;border:0;background:#2f55d4;color:#fff;font-size:18px;padding:14px;border-radius:12px;margin-top:12px;font-weight:700}
+.section{margin-bottom:18px}
+.label{font-size:20px;font-weight:800;margin-bottom:9px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:2px solid #ccc;background:#eee;color:#2878ff;border-radius:999px;padding:11px 16px;font-size:16px}
+.chip.active{background:#2f55d4;color:#fff}
+input,textarea{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:10px;padding:12px;font-size:16px}
+textarea{min-height:90px}
+.note{font-size:14px;color:#666;line-height:1.6}
+.small{font-size:13px;color:#777}
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <h1>募集登録</h1>
+<header>
+<h1>Basket Match</h1>
+<div class="tabs">
+  <div class="tab active" onclick="showPage('list',this)">募集一覧</div>
+  <div class="tab" onclick="showPage('post',this)">募集登録</div>
+  <div class="tab" onclick="showPage('trust',this)">信頼P</div>
+</div>
+</header>
 
-    <div class="section">
-      <div class="label">日付</div>
-      <input type="date" />
+<div id="list" class="page active">
+  <div class="card">
+    <div class="title">4/29 練習試合 募集</div>
+    <div class="trust">★★★★★ 4.8</div>
+    <div class="row">地域：阪神　カテゴリー：U12　レベル：県中位</div>
+    <div class="row">募集：2チーム　JBA登録：あり</div>
+    <div class="row">参加費：承認後に連絡</div>
+    <div class="badges">
+      <span class="badge">返信早い</span><span class="badge">承認率高い</span><span class="badge">実績あり</span>
     </div>
-
-    <div class="section">
-      <div class="label">地域</div>
-      <div class="chips">
-        <div class="chip active">神戸</div>
-        <div class="chip">阪神</div>
-        <div class="chip">東播</div>
-        <div class="chip">西播</div>
-        <div class="chip">北播</div>
-        <div class="chip">丹波</div>
-        <div class="chip">但馬</div>
-        <div class="chip">淡路</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="label">カテゴリー</div>
-      <div class="chips">
-        <div class="chip active">U12</div>
-        <div class="chip">U11</div>
-        <div class="chip">U10</div>
-        <div class="chip">U9</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="label">試合の種類</div>
-      <div class="chips">
-        <div class="chip active">練習試合</div>
-        <div class="chip">大会</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="label">レベル</div>
-      <div class="chips">
-        <div class="chip">県上位</div>
-        <div class="chip active">県中位</div>
-        <div class="chip">市内</div>
-        <div class="chip">地域</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="label">募集チーム数</div>
-      <div class="chips">
-        <div class="chip active">1</div>
-        <div class="chip">2</div>
-        <div class="chip">3</div>
-        <div class="chip">4</div>
-        <div class="chip">6</div>
-        <div class="chip">8</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="label">JBA登録</div>
-      <div class="chips">
-        <div class="chip active">あり</div>
-        <div class="chip">なし</div>
-        <div class="chip">どちらでも可</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="label">参加費</div>
-      <p class="note">承認後に連絡</p>
-    </div>
-
-    <div class="section">
-      <div class="label">メール（必須）</div>
-      <input type="email" placeholder="例：example@gmail.com" />
-    </div>
-
-    <div class="section">
-      <div class="label">詳細・備考</div>
-      <textarea placeholder="会場、時間、条件など"></textarea>
-    </div>
-
-    <p class="note">
-      ※対戦希望が届いた場合は、48時間以内を目安に承認または却下の判断をお願いします。<br>
-      ※会場・詳細は承認後に共有してください。
-    </p>
-
-    <button>登録</button>
+    <button onclick="showDetail('4/29 練習試合 募集','阪神','U12','県中位','2チーム','★★★★★ 4.8')">詳細を見る</button>
   </div>
 
-  <script>
-    document.querySelectorAll('.chips').forEach(group => {
-      group.querySelectorAll('.chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-          group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-          chip.classList.add('active');
-        });
-      });
+  <div class="card">
+    <div class="title">5/3 カップ戦 参加募集</div>
+    <div class="trust">★★★★☆ 4.2</div>
+    <div class="row">地域：東播　カテゴリー：U11　レベル：市内</div>
+    <div class="row">募集：4チーム　JBA登録：どちらでも可</div>
+    <div class="row">参加費：承認後に連絡</div>
+    <div class="badges">
+      <span class="badge">初参加OK</span><span class="badge">交流重視</span>
+    </div>
+    <button onclick="showDetail('5/3 カップ戦 参加募集','東播','U11','市内','4チーム','★★★★☆ 4.2')">詳細を見る</button>
+  </div>
+
+  <div class="card">
+    <div class="title">5/6 U10 練習試合</div>
+    <div class="trust">★★★★☆ 4.5</div>
+    <div class="row">地域：神戸　カテゴリー：U10　レベル：地域</div>
+    <div class="row">募集：1チーム　JBA登録：なし</div>
+    <div class="row">参加費：承認後に連絡</div>
+    <div class="badges">
+      <span class="badge">低学年歓迎</span><span class="badge">育成目的</span>
+    </div>
+    <button onclick="showDetail('5/6 U10 練習試合','神戸','U10','地域','1チーム','★★★★☆ 4.5')">詳細を見る</button>
+  </div>
+</div>
+
+<div id="detail" class="page">
+  <div class="card">
+    <div class="title" id="dTitle"></div>
+    <div class="trust" id="dTrust"></div>
+    <div class="row" id="dArea"></div>
+    <div class="row" id="dCat"></div>
+    <div class="row" id="dLevel"></div>
+    <div class="row" id="dTeams"></div>
+    <div class="row">参加費：承認後に連絡</div>
+    <div class="row">会場・時間・詳細条件は承認後に共有</div>
+    <p class="note">対戦希望を送った後、主催者が48時間以内を目安に承認または却下します。</p>
+    <button>対戦希望を送る</button>
+    <button onclick="backList()">一覧に戻る</button>
+  </div>
+</div>
+
+<div id="post" class="page">
+  <div class="card">
+    <div class="section"><div class="label">日付</div><input type="date"></div>
+
+    <div class="section"><div class="label">地域</div>
+      <div class="chips">
+        <div class="chip active">神戸</div><div class="chip">阪神</div><div class="chip">東播</div><div class="chip">西播</div>
+        <div class="chip">北播</div><div class="chip">丹波</div><div class="chip">但馬</div><div class="chip">淡路</div>
+      </div>
+    </div>
+
+    <div class="section"><div class="label">カテゴリー</div>
+      <div class="chips"><div class="chip active">U12</div><div class="chip">U11</div><div class="chip">U10</div><div class="chip">U9</div></div>
+    </div>
+
+    <div class="section"><div class="label">試合の種類</div>
+      <div class="chips"><div class="chip active">練習試合</div><div class="chip">大会</div></div>
+    </div>
+
+    <div class="section"><div class="label">レベル</div>
+      <div class="chips"><div class="chip">県上位</div><div class="chip active">県中位</div><div class="chip">市内</div><div class="chip">地域</div></div>
+    </div>
+
+    <div class="section"><div class="label">募集チーム数</div>
+      <div class="chips"><div class="chip active">1</div><div class="chip">2</div><div class="chip">3</div><div class="chip">4</div><div class="chip">6</div><div class="chip">8</div></div>
+    </div>
+
+    <div class="section"><div class="label">JBA登録</div>
+      <div class="chips"><div class="chip active">あり</div><div class="chip">なし</div><div class="chip">どちらでも可</div></div>
+    </div>
+
+    <div class="section"><div class="label">参加費</div><p class="note">承認後に連絡</p></div>
+    <div class="section"><div class="label">メール（必須）</div><input type="email" placeholder="example@gmail.com"></div>
+    <div class="section"><div class="label">詳細・備考</div><textarea placeholder="会場、時間、条件など"></textarea></div>
+
+    <p class="note">※会場・詳細は承認後に共有してください。<br>※現在はコーチ確認用の試作版です。</p>
+    <button>登録</button>
+  </div>
+</div>
+
+<div id="trust" class="page">
+  <div class="card">
+    <div class="title">信頼ポイントとは</div>
+    <p class="note">
+      対戦相手を選ぶときの安心材料です。単なる強さではなく、運営面の信頼度を表します。
+    </p>
+    <div class="row">・返信が早い</div>
+    <div class="row">・承認／却下の判断が早い</div>
+    <div class="row">・直前キャンセルが少ない</div>
+    <div class="row">・会場や時間の連絡が分かりやすい</div>
+    <div class="row">・過去の対戦後レビューが良い</div>
+    <p class="small">※最初は仮表示。実運用ではレビューや履歴から反映する想定。</p>
+  </div>
+</div>
+
+<script>
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
+function showDetail(title,area,cat,level,teams,trust){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('detail').classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('dTitle').textContent=title;
+  document.getElementById('dTrust').textContent=trust;
+  document.getElementById('dArea').textContent='地域：'+area;
+  document.getElementById('dCat').textContent='カテゴリー：'+cat;
+  document.getElementById('dLevel').textContent='レベル：'+level;
+  document.getElementById('dTeams').textContent='募集：'+teams;
+}
+function backList(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('list').classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.tab').classList.add('active');
+}
+document.querySelectorAll('.chips').forEach(group=>{
+  group.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      group.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
     });
-  </script>
+  });
+});
+</script>
 </body>
 </html>
