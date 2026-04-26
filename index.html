@@ -3,206 +3,145 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>バスケ試合ナビ兵庫</title>
-
+<title>Basket Match</title>
 <style>
-body{font-family:sans-serif;background:#f6f8fb;margin:0;padding:10px}
-.card{background:#fff;padding:14px;border-radius:12px;margin-bottom:10px}
-.btn{padding:14px;border-radius:10px;border:none;background:#1d4ed8;color:#fff;width:100%;font-size:16px}
-.choice button{margin:4px;padding:10px;border-radius:20px;border:1px solid #ccc}
-.on{background:#1d4ed8;color:#fff}
-.small{font-size:12px;color:#666}
+body{font-family:sans-serif;background:#f5f5f5;margin:0}
+.app{max-width:420px;margin:auto;padding:16px}
+h1{font-size:28px;margin-bottom:12px}
+.nav{display:flex;gap:8px;margin-bottom:16px}
+.nav button{flex:1;padding:12px;border-radius:999px;border:none;background:#ddd;font-weight:bold}
+.nav .on{background:#3150d4;color:#fff}
 
-.header button{
-  flex:1;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  background:#fff;
-}
-.header .active{
-  background:#1d4ed8;
-  color:white;
-}
+.page{display:none}
+.page.on{display:block}
+
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px}
+.choice button{margin:4px;padding:10px 14px;border-radius:999px;border:1px solid #ccc}
+.choice .on{background:#3150d4;color:#fff}
+
+.btn{width:100%;padding:14px;border:none;border-radius:12px;background:#3150d4;color:#fff;font-size:18px}
 </style>
 </head>
-
 <body>
+<div class="app">
 
-<!-- ヘッダー -->
-<div class="header" style="display:flex;gap:6px;margin-bottom:10px;">
-  <button onclick="showPage('team')" id="btn_team">チーム登録</button>
-  <button onclick="showPage('search')" id="btn_search">試合を探す</button>
-  <button onclick="showPage('post')" id="btn_post" class="active">試合募集</button>
-  <button onclick="showPage('my')" id="btn_my">My Team</button>
+<h1>Basket Match</h1>
+
+<div class="nav">
+<button id="b1" class="on" onclick="tab('team')">チーム登録</button>
+<button id="b2" onclick="tab('list')">試合を探す</button>
+<button id="b3" onclick="tab('post')">試合募集</button>
+<button id="b4" onclick="tab('info')">チーム情報</button>
 </div>
 
-<!-- 試合募集 -->
-<div id="page_post" class="card">
+<!-- チーム登録 -->
+<div id="team" class="page on">
+<div class="card">
+<h2>チーム登録</h2>
 
-<h2>試合を募集</h2>
-
-<label>日付</label>
-<input id="date" type="date">
+<label>チーム名</label>
+<input id="teamName">
 
 <label>地域</label>
-<div class="choice" id="city">
-<button onclick="sel('city',this)" class="on">西宮</button>
-<button onclick="sel('city',this)">尼崎</button>
-<button onclick="sel('city',this)">神戸</button>
-</div>
-
-<label>カテゴリー</label>
-<div class="choice" id="cat">
-<button onclick="sel('cat',this)" class="on">U12</button>
-<button onclick="sel('cat',this)">U11</button>
-</div>
-
-<label>試合の種類</label>
-<div class="choice" id="type">
-<button onclick="sel('type',this)" class="on">練習試合</button>
-<button onclick="sel('type',this)">大会</button>
-</div>
-
-<label>レベル</label>
-<div class="choice" id="level">
-<button onclick="sel('level',this)">県上位</button>
-<button onclick="sel('level',this)" class="on">県中位</button>
-<button onclick="sel('level',this)">市内</button>
-<button onclick="sel('level',this)">地域</button>
-</div>
-
-<label>募集チーム数</label>
-<div class="choice" id="team">
-<button onclick="sel('team',this)">1</button>
-<button onclick="sel('team',this)" class="on">2</button>
-<button onclick="sel('team',this)">3</button>
-<button onclick="sel('team',this)">4</button>
-<button onclick="sel('team',this)">6</button>
-<button onclick="sel('team',this)">8</button>
+<div class="choice" id="area">
+<button class="on" onclick="sel('area',this)">神戸</button>
+<button onclick="sel('area',this)">阪神</button>
+<button onclick="sel('area',this)">東播</button>
+<button onclick="sel('area',this)">西播</button>
 </div>
 
 <label>JBA登録</label>
 <div class="choice" id="jba">
-<button onclick="sel('jba',this)" class="on">あり</button>
+<button class="on" onclick="sel('jba',this)">あり</button>
 <button onclick="sel('jba',this)">なし</button>
 </div>
 
-<label>参加費</label>
-<input id="fee">
+<button class="btn" onclick="saveTeam()">登録</button>
+</div>
+</div>
 
-<label>メール（必須）</label>
-<input id="mail">
+<!-- 募集一覧 -->
+<div id="list" class="page">
+<div class="card">
+<h2>4/29 練習試合</h2>
+地域：阪神 / U12 / 県中位
+</div>
+</div>
 
-<div class="small">
-※対戦希望が届いた場合は、48時間以内に承認または却下をお願いします<br>
-※会場・詳細は承認後に共有
+<!-- 募集 -->
+<div id="post" class="page">
+<div class="card">
+<h2>試合募集</h2>
+
+<label>日付</label>
+<input type="date" id="date">
+
+<label>希望チーム数</label>
+<div class="choice" id="teams">
+<button class="on" onclick="sel('teams',this)">1</button>
+<button onclick="sel('teams',this)">2</button>
+<button onclick="sel('teams',this)">3</button>
+<button onclick="sel('teams',this)">4</button>
+<button onclick="sel('teams',this)">5</button>
+<button onclick="sel('teams',this)">6</button>
+<button onclick="sel('teams',this)">7</button>
+<button onclick="sel('teams',this)">8</button>
 </div>
 
 <button class="btn" onclick="save()">登録</button>
-
+</div>
 </div>
 
-<!-- 試合一覧 -->
-<div id="page_search" style="display:none;"></div>
+<!-- チーム情報 -->
+<div id="info" class="page">
+<div class="card">
+<h2>チーム情報</h2>
 
-<!-- チーム登録 -->
-<div id="page_team" style="display:none;">
-  <div class="card">チーム登録（今後実装）</div>
+<div id="teamView">未登録</div>
+
+<hr>
+
+<h3>信頼ポイント</h3>
+<p>
+・返信の早さ<br>
+・承認率<br>
+・トラブルの少なさ<br>
+</p>
+
+</div>
 </div>
 
-<!-- My Team -->
-<div id="page_my" style="display:none;">
-  <div class="card">My Team（今後実装）</div>
 </div>
 
 <script>
+function tab(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'))
+document.getElementById(id).classList.add('on')
 
-let data=[];
-
-// ページ切替（ここが重要）
-function showPage(page){
-
-  document.getElementById("page_post").style.display="none";
-  document.getElementById("page_search").style.display="none";
-  document.getElementById("page_team").style.display="none";
-  document.getElementById("page_my").style.display="none";
-
-  document.getElementById("page_"+page).style.display="block";
-
-  // ボタン状態
-  document.querySelectorAll(".header button").forEach(b=>b.classList.remove("active"));
-  document.getElementById("btn_"+page).classList.add("active");
+document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'))
+event.target.classList.add('on')
 }
 
-// 選択
 function sel(id,btn){
-  let parent=document.getElementById(id);
-  [...parent.children].forEach(b=>b.classList.remove("on"));
-  btn.classList.add("on");
+document.querySelectorAll('#'+id+' button').forEach(b=>b.classList.remove('on'))
+btn.classList.add('on')
 }
 
-// 値取得
-function getVal(id){
-  return document.querySelector("#"+id+" .on").innerText;
+function saveTeam(){
+let name=document.getElementById('teamName').value
+localStorage.setItem("team",name)
+alert("登録OK")
 }
 
-// 登録
 function save(){
-
-  let dateValue=document.getElementById("date").value;
-  let mail=document.getElementById("mail").value;
-
-  if(!dateValue){
-    alert("日付を入力してください");
-    return;
-  }
-
-  const today=new Date();
-  today.setHours(0,0,0,0);
-  const selected=new Date(dateValue);
-
-  if(selected < today){
-    alert("過去の日付は選択できません");
-    return;
-  }
-
-  if(!mail){
-    alert("メール必須");
-    return;
-  }
-
-  data.push({
-    date:dateValue,
-    city:getVal("city"),
-    cat:getVal("cat"),
-    type:getVal("type"),
-    level:getVal("level"),
-    team:getVal("team"),
-    jba:getVal("jba"),
-    fee:document.getElementById("fee").value
-  });
-
-  render();
-  alert("登録しました");
+let d=document.getElementById("date").value
+let today=new Date().toISOString().split('T')[0]
+if(d<today){alert("過去NG");return}
+alert("登録OK")
 }
 
-// 一覧
-function render(){
-  let html=data.map(d=>`
-  <div class="card">
-    <b>${d.city}</b>（${d.date}）<br>
-    ${d.cat} / ${d.type}<br>
-    ${d.level}<br>
-    ${d.team}チーム募集<br>
-    JBA:${d.jba}<br>
-    参加費:${d.fee||"未定"}<br>
-    <span class="small">🔒詳細は承認後</span>
-  </div>`).join("");
-
-  document.getElementById("page_search").innerHTML=html;
-}
-
+let t=localStorage.getItem("team")
+if(t)document.getElementById("teamView").innerText=t
 </script>
 
 </body>
