@@ -2,330 +2,131 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>バスケ試合ナビ兵庫</title>
+
 <style>
-:root{
-  --bg:#f4f6fb;
-  --card:#ffffff;
-  --text:#111827;
-  --muted:#6b7280;
-  --line:#e5e7eb;
-  --blue:#2563eb;
-  --green:#16a34a;
-  --red:#dc2626;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-.app{
-  max-width:520px;
-  margin:0 auto;
-  padding:18px;
-}
-h1{
-  font-size:26px;
-  margin:8px 0 16px;
-}
-h2{
-  font-size:20px;
-  margin:0 0 12px;
-}
-.card{
-  background:var(--card);
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:16px;
-  box-shadow:0 1px 3px rgba(0,0,0,.06);
-}
-label{
-  display:block;
-  font-weight:700;
-  margin:14px 0 6px;
-}
-input,select,textarea{
-  width:100%;
-  font-size:16px;
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#f3f4f6;
-}
-textarea{
-  min-height:80px;
-}
-.row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-.btn{
-  width:100%;
-  border:0;
-  border-radius:12px;
-  padding:14px;
-  font-size:16px;
-  font-weight:700;
-  color:white;
-  background:var(--blue);
-  margin-top:16px;
-}
-.btn-sub{
-  background:#374151;
-}
-.btn-red{
-  background:var(--red);
-}
-.match{
-  border-top:1px solid var(--line);
-  padding:14px 0;
-}
-.match:first-child{
-  border-top:0;
-}
-.title{
-  font-size:18px;
-  font-weight:800;
-  line-height:1.5;
-}
-.meta{
-  color:var(--muted);
-  font-size:14px;
-  margin-top:6px;
-  line-height:1.6;
-}
-.badge{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-  background:#dbeafe;
-  color:#1d4ed8;
-  margin-right:4px;
-}
-.status-ok{
-  background:#dcfce7;
-  color:#166534;
-}
-.status-wait{
-  background:#fef3c7;
-  color:#92400e;
-}
-.actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:10px;
-}
-.small{
-  font-size:13px;
-  color:var(--muted);
-}
-.empty{
-  color:var(--muted);
-  text-align:center;
-  padding:18px 0;
-}
+body{font-family:sans-serif;background:#f6f8fb;margin:0;padding:10px}
+.card{background:#fff;padding:14px;border-radius:12px;margin-bottom:10px}
+.btn{padding:14px;border-radius:10px;border:none;background:#1d4ed8;color:#fff;width:100%;font-size:16px}
+.choice button{margin:4px;padding:10px;border-radius:20px;border:1px solid #ccc}
+.on{background:#1d4ed8;color:#fff}
+.small{font-size:12px;color:#666}
 </style>
 </head>
 
 <body>
-<div class="app">
-  <h1>バスケ試合ナビ兵庫</h1>
 
-  <div class="card">
-    <h2>試合登録</h2>
+<div class="card">
+<h2>募集登録</h2>
 
-    <div class="row">
-      <div>
-        <label>日付</label>
-        <input type="date" id="date">
-      </div>
-      <div>
-        <label>開始時間</label>
-        <input type="time" id="time">
-      </div>
-    </div>
+<label>日付</label>
+<input id="date" type="date">
 
-    <label>チーム</label>
-    <select id="team">
-      <option value="EPIC U12">EPIC U12</option>
-      <option value="EPIC U15">EPIC U15</option>
-      <option value="神原・苦楽園">神原・苦楽園</option>
-      <option value="その他">その他</option>
-    </select>
-
-    <label>レベル感</label>
-    <select id="level">
-      <option value="県上位">県上位</option>
-      <option value="県中位">県中位</option>
-      <option value="市内">市内</option>
-      <option value="地域">地域</option>
-      <option value="初心者・交流">初心者・交流</option>
-    </select>
-
-    <label>種別</label>
-    <select id="type">
-      <option value="練習試合">練習試合</option>
-      <option value="大会">大会</option>
-    </select>
-
-    <label>相手チーム・大会名</label>
-    <input id="opponent" placeholder="例：〇〇ミニバス、△△カップ">
-
-    <label>会場</label>
-    <input id="place" placeholder="例：西宮市中央体育館">
-
-    <label>状態</label>
-    <select id="status">
-      <option value="募集中">募集中</option>
-      <option value="調整中">調整中</option>
-      <option value="確定">確定</option>
-      <option value="終了">終了</option>
-    </select>
-
-    <label>メモ</label>
-    <textarea id="memo" placeholder="例：午前のみ、2試合予定、TOあり 等"></textarea>
-
-    <button class="btn" onclick="addMatch()">登録する</button>
-    <p class="small">※ この端末のブラウザに保存されます。</p>
-  </div>
-
-  <div class="card">
-    <h2>検索・絞り込み</h2>
-
-    <label>チームで絞り込み</label>
-    <select id="filterTeam" onchange="render()">
-      <option value="">すべて</option>
-      <option value="EPIC U12">EPIC U12</option>
-      <option value="EPIC U15">EPIC U15</option>
-      <option value="神原・苦楽園">神原・苦楽園</option>
-      <option value="その他">その他</option>
-    </select>
-
-    <label>種別で絞り込み</label>
-    <select id="filterType" onchange="render()">
-      <option value="">すべて</option>
-      <option value="練習試合">練習試合</option>
-      <option value="大会">大会</option>
-    </select>
-  </div>
-
-  <div class="card">
-    <h2>試合一覧</h2>
-    <div id="list"></div>
-  </div>
+<label>地域</label>
+<div class="choice" id="city">
+<button onclick="sel('city',this)" class="on">西宮</button>
+<button onclick="sel('city',this)">尼崎</button>
+<button onclick="sel('city',this)">神戸</button>
 </div>
 
+<label>カテゴリー</label>
+<div class="choice" id="cat">
+<button onclick="sel('cat',this)" class="on">U12</button>
+<button onclick="sel('cat',this)">U11</button>
+</div>
+
+<label>試合の種類</label>
+<div class="choice" id="type">
+<button onclick="sel('type',this)" class="on">練習試合</button>
+<button onclick="sel('type',this)">大会</button>
+</div>
+
+<label>レベル</label>
+<div class="choice" id="level">
+<button onclick="sel('level',this)">県上位</button>
+<button onclick="sel('level',this)" class="on">県中位</button>
+<button onclick="sel('level',this)">市内</button>
+<button onclick="sel('level',this)">地域</button>
+</div>
+
+<label>募集チーム数</label>
+<div class="choice" id="team">
+<button onclick="sel('team',this)">1</button>
+<button onclick="sel('team',this)" class="on">2</button>
+<button onclick="sel('team',this)">3</button>
+<button onclick="sel('team',this)">4</button>
+<button onclick="sel('team',this)">6</button>
+<button onclick="sel('team',this)">8</button>
+</div>
+
+<label>JBA登録</label>
+<div class="choice" id="jba">
+<button onclick="sel('jba',this)" class="on">あり</button>
+<button onclick="sel('jba',this)">なし</button>
+</div>
+
+<label>参加費</label>
+<input id="fee" placeholder="例：1000円">
+
+<label>メール（必須）</label>
+<input id="mail">
+
+<div class="small">
+※対戦希望が届いた場合は、48時間以内を目安に承認または却下のご判断をお願いします<br>
+※会場・詳細は承認後に共有
+</div>
+
+<button class="btn" onclick="save()">登録</button>
+</div>
+
+<div id="list"></div>
+
 <script>
-let matches = JSON.parse(localStorage.getItem("basketMatches") || "[]");
+let data=[];
+
+function sel(id,btn){
+  let parent=document.getElementById(id);
+  [...parent.children].forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+}
+
+function getVal(id){
+  return document.querySelector("#"+id+" .on").innerText;
+}
 
 function save(){
-  localStorage.setItem("basketMatches", JSON.stringify(matches));
-}
+  let mail=document.getElementById("mail").value;
+  if(!mail){alert("メール必須");return;}
 
-function addMatch(){
-  const item = {
-    id: Date.now(),
-    date: document.getElementById("date").value,
-    time: document.getElementById("time").value,
-    team: document.getElementById("team").value,
-    level: document.getElementById("level").value,
-    type: document.getElementById("type").value,
-    opponent: document.getElementById("opponent").value,
-    place: document.getElementById("place").value,
-    status: document.getElementById("status").value,
-    memo: document.getElementById("memo").value
-  };
+  data.push({
+    date:document.getElementById("date").value,
+    city:getVal("city"),
+    cat:getVal("cat"),
+    type:getVal("type"),
+    level:getVal("level"),
+    team:getVal("team"),
+    jba:getVal("jba"),
+    fee:document.getElementById("fee").value
+  });
 
-  if(!item.date){
-    alert("日付を入力してください");
-    return;
-  }
-
-  matches.push(item);
-  matches.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
-  save();
-  clearForm();
   render();
-}
-
-function clearForm(){
-  document.getElementById("opponent").value = "";
-  document.getElementById("place").value = "";
-  document.getElementById("memo").value = "";
-}
-
-function deleteMatch(id){
-  if(!confirm("この試合を削除しますか？")) return;
-  matches = matches.filter(m => m.id !== id);
-  save();
-  render();
-}
-
-function shareLine(m){
-  const text =
-`【バスケ試合情報】
-日付：${m.date}
-時間：${m.time || "未定"}
-チーム：${m.team}
-レベル：${m.level}
-種別：${m.type}
-相手・大会：${m.opponent || "未定"}
-会場：${m.place || "未定"}
-状態：${m.status}
-メモ：${m.memo || "なし"}`;
-
-  const url = "https://line.me/R/msg/text/?" + encodeURIComponent(text);
-  window.open(url, "_blank");
+  alert("登録しました");
 }
 
 function render(){
-  const list = document.getElementById("list");
-  const fTeam = document.getElementById("filterTeam").value;
-  const fType = document.getElementById("filterType").value;
-
-  let filtered = matches.filter(m=>{
-    if(fTeam && m.team !== fTeam) return false;
-    if(fType && m.type !== fType) return false;
-    return true;
-  });
-
-  if(filtered.length === 0){
-    list.innerHTML = `<div class="empty">登録された試合はありません</div>`;
-    return;
-  }
-
-  list.innerHTML = filtered.map(m=>{
-    const statusClass = m.status === "確定" ? "status-ok" : "status-wait";
-    return `
-      <div class="match">
-        <div class="title">
-          ${m.date} ${m.time || ""}<br>
-          ${m.team} ／ ${m.opponent || "相手未定"}
-        </div>
-        <div class="meta">
-          <span class="badge">${m.level}</span>
-          <span class="badge">${m.type}</span>
-          <span class="badge ${statusClass}">${m.status}</span><br>
-          会場：${m.place || "未定"}<br>
-          メモ：${m.memo || "なし"}
-        </div>
-        <div class="actions">
-          <button class="btn btn-sub" onclick='shareLine(${JSON.stringify(m)})'>LINE共有</button>
-          <button class="btn btn-red" onclick="deleteMatch(${m.id})">削除</button>
-        </div>
-      </div>
-    `;
-  }).join("");
+  list.innerHTML=data.map(d=>`
+  <div class="card">
+    <b>${d.city}</b><br>
+    ${d.cat} / ${d.type}<br>
+    ${d.level}<br>
+    ${d.team}チーム募集<br>
+    JBA:${d.jba}<br>
+    参加費:${d.fee||"未定"}<br>
+    <span class="small">🔒詳細は承認後</span>
+  </div>`).join("");
 }
-
-render();
 </script>
+
 </body>
 </html>
