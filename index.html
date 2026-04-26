@@ -1,130 +1,189 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>バスケ試合ナビ兵庫</title>
-<style>
-body{font-family:sans-serif;background:#f6f8fb;margin:0;padding:10px}
-.card{background:#fff;padding:14px;border-radius:12px;margin-bottom:10px}
-.btn{padding:14px;border-radius:10px;border:none;background:#1d4ed8;color:#fff;width:100%;font-size:16px}
-.choice button{margin:4px;padding:10px;border-radius:20px;border:1px solid #ccc}
-.on{background:#1d4ed8;color:#fff}
-.small{font-size:12px;color:#666}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>募集登録</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: #f5f6f8;
+      color: #111;
+    }
+    .wrap {
+      max-width: 560px;
+      margin: 24px auto;
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px 22px 28px;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 30px;
+      margin: 0 0 24px;
+    }
+    .section {
+      margin-bottom: 18px;
+    }
+    .label {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .chip {
+      border: 2px solid #ccc;
+      background: #eee;
+      color: #2580ff;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 17px;
+      cursor: pointer;
+    }
+    .chip.active {
+      background: #2f55d4;
+      color: #fff;
+    }
+    input, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+    textarea {
+      min-height: 90px;
+    }
+    .note {
+      color: #666;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+    button {
+      width: 100%;
+      border: none;
+      background: #2f55d4;
+      color: #fff;
+      font-size: 22px;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 18px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <h1>募集登録</h1>
 
-<div class="card">
-<h2>募集登録</h2>
+    <div class="section">
+      <div class="label">日付</div>
+      <input type="date" />
+    </div>
 
-<label>日付</label>
-<input id="date" type="date">
+    <div class="section">
+      <div class="label">地域</div>
+      <div class="chips">
+        <div class="chip active">神戸</div>
+        <div class="chip">阪神</div>
+        <div class="chip">東播</div>
+        <div class="chip">西播</div>
+        <div class="chip">北播</div>
+        <div class="chip">丹波</div>
+        <div class="chip">但馬</div>
+        <div class="chip">淡路</div>
+      </div>
+    </div>
 
-<label>地域</label>
-<div class="choice" id="city">
-<button onclick="sel('city',this)" class="on">西宮</button>
-<button onclick="sel('city',this)">尼崎</button>
-<button onclick="sel('city',this)">神戸</button>
-</div>
+    <div class="section">
+      <div class="label">カテゴリー</div>
+      <div class="chips">
+        <div class="chip active">U12</div>
+        <div class="chip">U11</div>
+        <div class="chip">U10</div>
+        <div class="chip">U9</div>
+      </div>
+    </div>
 
-<label>カテゴリー</label>
-<div class="choice" id="cat">
-<button onclick="sel('cat',this)" class="on">U12</button>
-<button onclick="sel('cat',this)">U11</button>
-</div>
+    <div class="section">
+      <div class="label">試合の種類</div>
+      <div class="chips">
+        <div class="chip active">練習試合</div>
+        <div class="chip">大会</div>
+      </div>
+    </div>
 
-<label>試合の種類</label>
-<div class="choice" id="type">
-<button onclick="sel('type',this)" class="on">練習試合</button>
-<button onclick="sel('type',this)">大会</button>
-</div>
+    <div class="section">
+      <div class="label">レベル</div>
+      <div class="chips">
+        <div class="chip">県上位</div>
+        <div class="chip active">県中位</div>
+        <div class="chip">市内</div>
+        <div class="chip">地域</div>
+      </div>
+    </div>
 
-<label>レベル</label>
-<div class="choice" id="level">
-<button onclick="sel('level',this)">県上位</button>
-<button onclick="sel('level',this)" class="on">県中位</button>
-<button onclick="sel('level',this)">市内</button>
-<button onclick="sel('level',this)">地域</button>
-</div>
+    <div class="section">
+      <div class="label">募集チーム数</div>
+      <div class="chips">
+        <div class="chip active">1</div>
+        <div class="chip">2</div>
+        <div class="chip">3</div>
+        <div class="chip">4</div>
+        <div class="chip">6</div>
+        <div class="chip">8</div>
+      </div>
+    </div>
 
-<label>募集チーム数</label>
-<div class="choice" id="team">
-<button onclick="sel('team',this)">1</button>
-<button onclick="sel('team',this)" class="on">2</button>
-<button onclick="sel('team',this)">3</button>
-<button onclick="sel('team',this)">4</button>
-<button onclick="sel('team',this)">6</button>
-<button onclick="sel('team',this)">8</button>
-</div>
+    <div class="section">
+      <div class="label">JBA登録</div>
+      <div class="chips">
+        <div class="chip active">あり</div>
+        <div class="chip">なし</div>
+        <div class="chip">どちらでも可</div>
+      </div>
+    </div>
 
-<label>JBA登録</label>
-<div class="choice" id="jba">
-<button onclick="sel('jba',this)" class="on">あり</button>
-<button onclick="sel('jba',this)">なし</button>
-</div>
+    <div class="section">
+      <div class="label">参加費</div>
+      <p class="note">承認後に連絡</p>
+    </div>
 
-<label>参加費</label>
-<input id="fee" placeholder="例：1000円">
+    <div class="section">
+      <div class="label">メール（必須）</div>
+      <input type="email" placeholder="例：example@gmail.com" />
+    </div>
 
-<label>メール（必須）</label>
-<input id="mail">
+    <div class="section">
+      <div class="label">詳細・備考</div>
+      <textarea placeholder="会場、時間、条件など"></textarea>
+    </div>
 
-<div class="small">
-※対戦希望が届いた場合は、48時間以内を目安に承認または却下のご判断をお願いします<br>
-※会場・詳細は承認後に共有
-</div>
+    <p class="note">
+      ※対戦希望が届いた場合は、48時間以内を目安に承認または却下の判断をお願いします。<br>
+      ※会場・詳細は承認後に共有してください。
+    </p>
 
-<button class="btn" onclick="save()">登録</button>
-</div>
+    <button>登録</button>
+  </div>
 
-<div id="list"></div>
-
-<script>
-let data=[];
-
-function sel(id,btn){
-  let parent=document.getElementById(id);
-  [...parent.children].forEach(b=>b.classList.remove("on"));
-  btn.classList.add("on");
-}
-
-function getVal(id){
-  return document.querySelector("#"+id+" .on").innerText;
-}
-
-function save(){
-  let mail=document.getElementById("mail").value;
-  if(!mail){alert("メール必須");return;}
-
-  data.push({
-    date:document.getElementById("date").value,
-    city:getVal("city"),
-    cat:getVal("cat"),
-    type:getVal("type"),
-    level:getVal("level"),
-    team:getVal("team"),
-    jba:getVal("jba"),
-    fee:document.getElementById("fee").value
-  });
-
-  render();
-  alert("登録しました");
-}
-
-function render(){
-  list.innerHTML=data.map(d=>`
-  <div class="card">
-    <b>${d.city}</b><br>
-    ${d.cat} / ${d.type}<br>
-    ${d.level}<br>
-    ${d.team}チーム募集<br>
-    JBA:${d.jba}<br>
-    参加費:${d.fee||"未定"}<br>
-    <span class="small">🔒詳細は承認後</span>
-  </div>`).join("");
-}
-</script>
-
+  <script>
+    document.querySelectorAll('.chips').forEach(group => {
+      group.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+        });
+      });
+    });
+  </script>
 </body>
 </html>
