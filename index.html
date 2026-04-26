@@ -12,20 +12,33 @@ body{font-family:sans-serif;background:#f6f8fb;margin:0;padding:10px}
 .choice button{margin:4px;padding:10px;border-radius:20px;border:1px solid #ccc}
 .on{background:#1d4ed8;color:#fff}
 .small{font-size:12px;color:#666}
-.tab button{flex:1;padding:10px;border-radius:10px;border:1px solid #ccc;background:#fff}
+
+.header button{
+  flex:1;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  background:#fff;
+}
+.header .active{
+  background:#1d4ed8;
+  color:white;
+}
 </style>
 </head>
 
 <body>
 
-<!-- タブ -->
-<div class="tab" style="display:flex;gap:6px;margin-bottom:10px;">
-  <button id="tab1" onclick="showTab(1)" class="on">試合を募集</button>
-  <button id="tab2" onclick="showTab(2)">試合を探す</button>
+<!-- ヘッダー -->
+<div class="header" style="display:flex;gap:6px;margin-bottom:10px;">
+  <button onclick="showPage('team')" id="btn_team">チーム登録</button>
+  <button onclick="showPage('search')" id="btn_search">試合を探す</button>
+  <button onclick="showPage('post')" id="btn_post" class="active">試合募集</button>
+  <button onclick="showPage('my')" id="btn_my">My Team</button>
 </div>
 
-<!-- 募集フォーム -->
-<div class="card" id="form">
+<!-- 試合募集 -->
+<div id="page_post" class="card">
 
 <h2>試合を募集</h2>
 
@@ -76,13 +89,13 @@ body{font-family:sans-serif;background:#f6f8fb;margin:0;padding:10px}
 </div>
 
 <label>参加費</label>
-<input id="fee" placeholder="例：1000円">
+<input id="fee">
 
 <label>メール（必須）</label>
 <input id="mail">
 
 <div class="small">
-※対戦希望が届いた場合は、48時間以内を目安に承認または却下のご判断をお願いします<br>
+※対戦希望が届いた場合は、48時間以内に承認または却下をお願いします<br>
 ※会場・詳細は承認後に共有
 </div>
 
@@ -90,25 +103,39 @@ body{font-family:sans-serif;background:#f6f8fb;margin:0;padding:10px}
 
 </div>
 
-<!-- 一覧 -->
-<div id="list" style="display:none;"></div>
+<!-- 試合一覧 -->
+<div id="page_search" style="display:none;"></div>
+
+<!-- チーム登録 -->
+<div id="page_team" style="display:none;">
+  <div class="card">チーム登録（今後実装）</div>
+</div>
+
+<!-- My Team -->
+<div id="page_my" style="display:none;">
+  <div class="card">My Team（今後実装）</div>
+</div>
 
 <script>
 
 let data=[];
 
-// タブ切り替え
-function showTab(n){
-  document.getElementById("form").style.display = n===1?"block":"none";
-  document.getElementById("list").style.display = n===2?"block":"block":"none";
+// ページ切替（ここが重要）
+function showPage(page){
 
-  tab1.classList.remove("on");
-  tab2.classList.remove("on");
+  document.getElementById("page_post").style.display="none";
+  document.getElementById("page_search").style.display="none";
+  document.getElementById("page_team").style.display="none";
+  document.getElementById("page_my").style.display="none";
 
-  document.getElementById("tab"+n).classList.add("on");
+  document.getElementById("page_"+page).style.display="block";
+
+  // ボタン状態
+  document.querySelectorAll(".header button").forEach(b=>b.classList.remove("active"));
+  document.getElementById("btn_"+page).classList.add("active");
 }
 
-// 選択ボタン
+// 選択
 function sel(id,btn){
   let parent=document.getElementById(id);
   [...parent.children].forEach(b=>b.classList.remove("on"));
@@ -131,7 +158,6 @@ function save(){
     return;
   }
 
-  // 過去日チェック
   const today=new Date();
   today.setHours(0,0,0,0);
   const selected=new Date(dateValue);
@@ -161,9 +187,9 @@ function save(){
   alert("登録しました");
 }
 
-// 一覧表示
+// 一覧
 function render(){
-  list.innerHTML=data.map(d=>`
+  let html=data.map(d=>`
   <div class="card">
     <b>${d.city}</b>（${d.date}）<br>
     ${d.cat} / ${d.type}<br>
@@ -173,6 +199,8 @@ function render(){
     参加費:${d.fee||"未定"}<br>
     <span class="small">🔒詳細は承認後</span>
   </div>`).join("");
+
+  document.getElementById("page_search").innerHTML=html;
 }
 
 </script>
