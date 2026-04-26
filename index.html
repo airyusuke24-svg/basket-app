@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>バスケ試合ナビ兵庫 最新テスト版</title>
+<style>
+:root{--bg:#f6f8fb;--text:#1f2937;--muted:#6b7280;--line:#e5e7eb;--blue:#1d4ed8;--shadow:0 10px 24px rgba(15,23,42,.08)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
+.app{max-width:430px;margin:0 auto;min-height:100vh;padding:14px 14px 92px}
+.hero{background:linear-gradient(135deg,#111827,#1d4ed8);color:#fff;border-radius:24px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 6px;font-size:24px}.hero p{margin:0;font-size:13px;line-height:1.55;opacity:.95}
+.card{background:#fff;border:1px solid #edf2f7;border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+h3{margin:0 0 10px;font-size:17px}.title{font-size:18px;font-weight:900;margin:0 0 4px}.small{font-size:12px;color:var(--muted)}
+label{display:block;margin:0 0 7px;font-size:13px;font-weight:800;color:#374151}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:13px;padding:13px 14px;font-size:16px;background:#fff}
+textarea{min-height:82px;resize:vertical}.stack{display:flex;flex-direction:column;gap:12px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{width:100%;border:0;border-radius:15px;padding:15px 16px;font-size:16px;font-weight:900;cursor:pointer}.primary{background:var(--blue);color:#fff}.light{background:#f3f4f6;color:#111827}.okb{background:#ecfdf5;color:#065f46}.warnb{background:#fff7ed;color:#9a3412}.danger{background:#fee2e2;color:#991b1b}.inline{width:auto;padding:11px 13px;font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.action{background:white;border:1px solid #edf2f7;border-radius:18px;padding:16px 14px;box-shadow:var(--shadow);cursor:pointer}.action h3{margin:0 0 6px}.action p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+.choice{display:flex;flex-wrap:wrap;gap:8px}.cbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 13px;font-size:14px;font-weight:900}.cbtn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tabs{display:flex;gap:8px;margin-bottom:12px;overflow:auto;padding-bottom:2px}.tab{border:0;background:#f3f4f6;border-radius:999px;padding:10px 13px;font-size:13px;font-weight:900;white-space:nowrap}.tab.on{background:var(--blue);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.chip{padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;background:#f3f4f6;color:#374151}.ok{background:#ecfdf5;color:#065f46}.warn{background:#fff7ed;color:#9a3412}.bad{background:#fef2f2;color:#991b1b}.blue{background:#dbeafe;color:#1d4ed8}.purple{background:#eef2ff;color:#3730a3}.info{background:#ecfeff;color:#155e75}.gold{background:#fef3c7;color:#92400e}
+.list-card{background:#fff;border:1px solid #edf2f7;border-radius:18px;padding:14px;box-shadow:var(--shadow);margin-bottom:12px}.date-row{display:flex;gap:12px;align-items:flex-start}.date{min-width:70px;background:#f1f5ff;color:#1d4ed8;border:1px solid #d7e6ff;border-radius:18px;padding:8px 6px;text-align:center;font-weight:900}.md{font-size:22px;line-height:1}.wd{font-size:11px;margin-top:4px}.yr{font-size:10px;opacity:.65;margin-top:3px}
+.trust{background:#f8fafc;border:1px solid #edf2f7;border-radius:14px;padding:10px;margin-top:10px}.note{margin-top:9px;background:#fafafa;border:1px solid #f1f5f9;border-radius:12px;padding:9px 10px;font-size:12px;line-height:1.55}.notice{background:#eff6ff;color:#1e40af;border-radius:14px;padding:11px 12px;line-height:1.55;font-size:12px}.warning{background:#fff7ed;color:#9a3412;border-radius:14px;padding:11px 12px;line-height:1.55;font-size:12px}
+.hidden{display:none!important}.empty{text-align:center;color:var(--muted);padding:20px 8px;font-size:13px}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;width:min(430px,calc(100vw - 20px));background:rgba(255,255,255,.96);border:1px solid var(--line);box-shadow:0 10px 24px rgba(15,23,42,.12);border-radius:20px;display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden;backdrop-filter:blur(12px)}
+.nav button{border:0;background:transparent;padding:14px 8px;font-size:12px;font-weight:900;color:#374151}.nav button.on{background:#eef2ff;color:var(--blue)}
+.modalBack{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:flex-end;justify-content:center;padding:12px;z-index:30}.modal{width:min(430px,100%);background:#fff;border-radius:22px;padding:16px;box-shadow:0 18px 40px rgba(0,0,0,.25)}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="login">
+  <div class="hero"><h1>バスケ試合ナビ兵庫</h1><p>最新版テスト。募集・申込・承認・信用スコア・JBA・施設情報・レベル感に対応。</p></div>
+  <div class="card"><h3>ログイン</h3><div class="stack"><div><label>表示名</label><input id="loginName" placeholder="例：大西"></div><button class="btn primary" onclick="login()">ログインする</button></div></div>
+</section>
+
+<section id="setup" class="hidden">
+  <div class="card"><h3>チーム登録</h3><div class="notice">テスト版です。本名や本当の連絡先ではなく仮情報で試してください。</div><br><div class="stack">
+    <div><label>チーム名</label><input id="setupTeam" placeholder="例：EPIC U12"></div>
+    <div><label>担当者名</label><input id="setupManager" placeholder="例：山田"></div>
+    <div><label>地域</label><select id="setupCity"></select></div>
+    <div><label>JBA登録</label><select id="setupJba"><option>あり</option><option>なし</option><option>不明</option></select></div>
+    <div><label>紹介</label><textarea id="setupIntro" placeholder="例：6年生中心、交流メイン"></textarea></div>
+    <button class="btn primary" onclick="saveTeam()">登録する</button>
+  </div></div>
+</section>
+
+<section id="home" class="hidden">
+  <div class="hero"><h1>バスケ試合ナビ兵庫</h1><p>信用できる試合マッチングを目指すテスト版です。</p></div>
+  <div class="card"><div class="title" id="homeTeam">-</div><div class="trust"><div class="chips"><span class="chip ok">🟢 認証済み</span><span class="chip ok">⭐ 信頼 80</span><span class="chip ok" id="homeJba">🏀 JBA登録あり</span><span class="chip">キャンセル 0</span></div></div></div>
+  <div class="card"><div class="grid"><div class="action" onclick="go('list')"><h3>試合を探す</h3><p>条件と信用情報を見て申込</p></div><div class="action" onclick="go('post')"><h3>募集する</h3><p>日時・条件を登録</p></div></div></div>
+  <div class="card"><div class="title">現在 <span id="activeCount">0</span>件募集中</div><div class="small">管理情報はマイページに集約しています。</div></div>
+</section>
+
+<section id="list" class="hidden">
+  <div class="card"><h3>募集を探す</h3><div class="stack">
+    <div><label>地域</label><select id="fCity" onchange="renderList()"><option value="">すべて</option></select></div>
+    <div><label>男女</label><select id="fGender" onchange="renderList()"><option value="">すべて</option><option>男子</option><option>女子</option><option>混合</option></select></div>
+    <div><label>カテゴリー</label><select id="fCat" onchange="renderList()"><option value="">すべて</option><option>U12</option><option>U11</option><option>U10</option><option>U9以下</option></select></div>
+    <div><label>時間帯</label><select id="fSlot" onchange="renderList()"><option value="">すべて</option><option>午前</option><option>午後</option><option>終日</option></select></div>
+    <div><label>試合の性質</label><select id="fKind" onchange="renderList()"><option value="">すべて</option><option>交流試合</option><option>練習試合</option><option>カップ戦</option><option>大会</option></select></div>
+  </div></div>
+  <div id="postList"></div>
+</section>
+
+<section id="post" class="hidden">
+  <div class="card"><h3>募集する</h3><div class="stack">
+    <div><label>日付</label><input id="pDate" type="date"></div>
+    <div><label>時間帯</label><div class="choice" id="slotG"><button class="cbtn on" data-v="午前" onclick="choice('slot',this)">午前</button><button class="cbtn" data-v="午後" onclick="choice('slot',this)">午後</button><button class="cbtn" data-v="終日" onclick="choice('slot',this)">終日</button></div><input type="hidden" id="slot" value="午前"></div>
+    <div><label>地域</label><div class="choice" id="cityG"></div><input type="hidden" id="city" value="西宮市"></div>
+    <div><label>男女</label><div class="choice" id="genderG"><button class="cbtn on" data-v="男子" onclick="choice('gender',this)">男子</button><button class="cbtn" data-v="女子" onclick="choice('gender',this)">女子</button><button class="cbtn" data-v="混合" onclick="choice('gender',this)">混合</button></div><input type="hidden" id="gender" value="男子"></div>
+    <div><label>カテゴリー</label><select id="cat"><option>U12</option><option>U11</option><option>U10</option><option>U9以下</option></select></div>
+    <div><label>試合の性質</label><select id="kind" onchange="updateKindOptions()"><option>交流試合</option><option>練習試合</option><option>カップ戦</option><option>大会</option></select></div>
+    <div><label>募集チーム数</label><select id="wanted"></select></div>
+    <div><label>レベル感</label><select id="level"><option>初心者OK</option><option selected>同レベル希望</option><option>強め希望</option></select></div>
+    <div id="cupOptions" class="hidden">
+      <div class="notice">カップ戦・大会のみ、参加条件を設定できます。</div><br>
+      <div><label>参加条件</label><select id="entryCondition"><option>制限なし</option><option>認証チームのみ</option><option>信頼チーム限定</option></select></div><br>
+      <div><label>JBA条件</label><select id="jbaCondition"><option>指定なし</option><option>JBA登録チーム優先</option></select></div>
+    </div>
+    <div><label>体育館</label><select id="gym"><option>あり</option><option>未定</option></select></div>
+    <div><label>参加費</label><select id="fee"><option>無料</option><option>あり（詳細は承認後）</option></select></div>
+    <div><label>駐車場</label><select id="parking"><option>あり</option><option>少ない</option><option>不明</option></select></div>
+    <div><label>LINE URL</label><input id="ownerLine" placeholder="例：https://line.me/..."></div>
+    <div><label>メール</label><input id="ownerMail" placeholder="例：sample@example.com"></div>
+    <div><label>連絡補足</label><textarea id="contactNote" placeholder="例：承認後に詳細連絡"></textarea></div>
+    <div><label>チームの特徴</label><textarea id="note" placeholder="例：6年生中心、交流メイン"></textarea></div>
+    <button class="btn primary" onclick="savePost()">募集する</button>
+  </div></div>
+</section>
+
+<section id="mypage" class="hidden">
+  <div class="tabs"><button class="tab on" id="tabMine" onclick="switchTab('mine')">自分の募集</button><button class="tab" id="tabReqs" onclick="switchTab('reqs')">届いた希望</button><button class="tab" id="tabTrust" onclick="switchTab('trust')">信用情報</button></div>
+  <div id="mine"></div><div id="reqs" class="hidden"></div>
+  <div id="trust" class="hidden"><div class="card"><h3>信用情報</h3><div class="trust"><div style="font-size:30px;font-weight:900;color:#065f46">80</div><div class="chips"><span class="chip ok">認証済み</span><span class="chip ok" id="trustJba">JBA登録あり</span><span class="chip">試合成立 0</span><span class="chip">キャンセル 0</span></div></div><br><div class="notice">本番では試合成立、レビュー、キャンセル履歴、JBA確認状況で信頼情報を更新します。</div></div></div>
+</section>
+<section id="detail" class="hidden"><div id="detailBody"></div></section>
+<section id="request" class="hidden"><div id="requestBody"></div></section>
+</div>
+<div class="nav hidden" id="nav"><button id="navHome" class="on" onclick="go('home')">ホーム</button><button id="navList" onclick="go('list')">探す</button><button id="navPost" onclick="go('post')">募集</button><button id="navMy" onclick="go('mypage')">マイページ</button></div>
+<div id="modal" class="hidden"></div>
+
+<script>
+const cities=["西宮市","尼崎市","神戸市","伊丹市","宝塚市","芦屋市","明石市","姫路市"];
+const KP="bm_latest_posts",KR="bm_latest_reqs",KS="bm_latest_session";
+const seed=[
+{id:"1",team:"西宮サンダーズ",owner:"西宮サンダーズ",date:"2026-04-29",slot:"午前",city:"西宮市",gender:"男子",cat:"U12",kind:"交流試合",wanted:3,level:"同レベル希望",gym:"あり",fee:"無料",parking:"少ない",entryCondition:"制限なし",jbaCondition:"指定なし",jba:"あり",note:"6年生中心です。",status:"active",trust:88,verified:true,cancel:0,match:8,line:"",mail:"coach@example.com"},
+{id:"2",team:"神戸カップ運営",owner:"神戸カップ運営",date:"2026-05-03",slot:"終日",city:"神戸市",gender:"女子",cat:"U10",kind:"カップ戦",wanted:8,level:"強め希望",gym:"あり",fee:"あり（詳細は承認後）",parking:"あり",entryCondition:"信頼チーム限定",jbaCondition:"JBA登録チーム優先",jba:"あり",note:"8チーム程度のカップ戦予定です。",status:"active",trust:91,verified:true,cancel:0,match:12,line:"https://line.me/example",mail:""}
+];
+let currentPost="";
+function init(){if(!localStorage.getItem(KP))localStorage.setItem(KP,JSON.stringify(seed));if(!localStorage.getItem(KR))localStorage.setItem(KR,"[]");cities.forEach(c=>{["setupCity","fCity"].forEach(id=>{let o=document.createElement("option");o.value=c;o.textContent=c;document.getElementById(id).appendChild(o)})});cityG.innerHTML=cities.map((c,i)=>`<button class="cbtn ${i==0?'on':''}" data-v="${c}" onclick="choice('city',this)">${c}</button>`).join("");updateKindOptions();applySession()}
+function session(){return JSON.parse(localStorage.getItem(KS)||"null")}function setSession(s){localStorage.setItem(KS,JSON.stringify(s))}
+function posts(){return JSON.parse(localStorage.getItem(KP)||"[]")}function setPosts(v){localStorage.setItem(KP,JSON.stringify(v))}
+function requests(){return JSON.parse(localStorage.getItem(KR)||"[]")}function setRequests(v){localStorage.setItem(KR,JSON.stringify(v))}
+function login(){let name=loginName.value.trim();if(!name)return alert("表示名を入力してください");let s=session()||{};s.name=name;setSession(s);applySession()}
+function saveTeam(){let team=setupTeam.value.trim(),manager=setupManager.value.trim();if(!team||!manager)return alert("チーム名と担当者名を入力してください");setSession({...(session()||{}),team,manager,city:setupCity.value,jba:setupJba.value,intro:setupIntro.value});applySession()}
+function applySession(){let s=session();hideAll();if(!s){show("login");return}if(!s.team){show("setup");return}nav.classList.remove("hidden");homeTeam.textContent=s.team;homeJba.textContent="🏀 JBA登録 "+(s.jba||"あり");trustJba.textContent="JBA登録 "+(s.jba||"あり");go("home")}
+function approved(id){return requests().filter(r=>r.postId==id&&r.status=="承認").length}function remain(p){return Math.max(0,Number(p.wanted)-approved(p.id))}
+function activePosts(){return posts().filter(p=>p.status=="active"||p.status=="full")}
+function fmt(d){let a=d.split("-");let w=["日","月","火","水","木","金","土"][new Date(d+"T00:00:00").getDay()];return{md:`${+a[1]}/${+a[2]}`,w,y:a[0]}}
+function trustChips(p){return `${p.verified?'<span class="chip ok">🟢 認証済み</span>':'<span class="chip warn">🟡 未認証</span>'}<span class="chip ${p.trust>=80?'ok':p.trust>=50?'warn':'bad'}">⭐ 信頼 ${p.trust}</span><span class="chip ${p.jba=='あり'?'ok':'warn'}">🏀 JBA ${p.jba||'不明'}</span><span class="chip">成立 ${p.match||0}</span><span class="chip ${p.cancel>0?'warn':''}">キャンセル ${p.cancel||0}</span>`}
+function statusChip(p){if(p.status=="full")return'<span class="chip">満枠</span>';if(p.status=="cancelled")return'<span class="chip">取りやめ</span>';return'<span class="chip ok">募集中</span>'}
+function facilityChips(p){return `<span class="chip info">🏫 体育館 ${p.gym||"未定"}</span><span class="chip info">💰 ${p.fee||"無料"}</span><span class="chip info">🚗 駐車場 ${p.parking||"不明"}</span>`}
+function conditionChips(p){let cup=(p.kind=="カップ戦"||p.kind=="大会")?`<span class="chip gold">参加条件 ${p.entryCondition||"制限なし"}</span><span class="chip gold">${p.jbaCondition||"指定なし"}</span>`:"";return `<span class="chip blue">レベル ${p.level||"同レベル希望"}</span>`+cup}
+function postCard(p){let f=fmt(p.date);return `<div class="list-card"><div class="date-row"><div class="date"><div class="md">${f.md}</div><div class="wd">${f.w}曜</div><div class="yr">${f.y}</div></div><div style="flex:1"><div class="title">${p.team}</div><div class="small">${p.city}</div><div class="chips">${statusChip(p)}<span class="chip blue">${p.slot}</span><span class="chip">${p.kind}</span><span class="chip purple">${p.cat}</span><span class="chip">${p.gender}</span><span class="chip">残り${remain(p)}枠</span></div><div class="chips">${facilityChips(p)}${conditionChips(p)}</div><div class="trust"><div class="chips">${trustChips(p)}</div></div>${p.note?`<div class="note">${p.note}</div>`:""}</div></div><button class="btn light" style="margin-top:12px" onclick="openDetail('${p.id}')">詳細を見る</button></div>`}
+function renderHome(){activeCount.textContent=activePosts().filter(p=>p.status=="active").length}
+function renderList(){let c=fCity.value,g=fGender.value,ca=fCat.value,sl=fSlot.value,k=fKind.value;let arr=activePosts().filter(p=>(!c||p.city==c)&&(!g||p.gender==g)&&(!ca||p.cat==ca)&&(!sl||p.slot==sl)&&(!k||p.kind==k));postList.innerHTML=arr.length?arr.map(postCard).join(""):'<div class="card empty">条件に合う募集がありません</div>';renderHome()}
+function openDetail(id){let p=posts().find(x=>x.id==id),f=fmt(p.date);detailBody.innerHTML=`<div class="card"><div class="date-row"><div class="date"><div class="md">${f.md}</div><div class="wd">${f.w}曜</div><div class="yr">${f.y}</div></div><div><div class="title">${p.team}</div><div class="small">${p.city}</div><div class="chips">${statusChip(p)}<span class="chip blue">${p.slot}</span><span class="chip">${p.kind}</span><span class="chip purple">${p.cat}</span><span class="chip">${p.gender}</span><span class="chip">残り${remain(p)}枠</span></div><div class="chips">${facilityChips(p)}${conditionChips(p)}</div></div></div></div><div class="card"><h3>信用情報</h3><div class="trust"><div class="chips">${trustChips(p)}</div></div><br><div class="notice">認証・信頼スコア・JBA登録・キャンセル履歴を見て判断できます。JBA登録は現段階では自己申告です。</div></div><div class="card"><h3>チームの特徴</h3><p>${p.note||"未入力"}</p></div><div class="card">${p.status=="active"?`<button class="btn primary" onclick="confirmRequest('${p.id}')">対戦希望する</button>`:`<div class="notice">この募集は受付終了です。</div>`}<button class="btn light" style="margin-top:12px" onclick="go('list')">一覧に戻る</button></div>`;go("detail")}
+function confirmRequest(id){currentPost=id;modal.innerHTML=`<div class="modalBack"><div class="modal"><h3>申込前の確認</h3><div class="warning">・承認後のキャンセルはできるだけ避けてください。<br>・直前キャンセルや無断キャンセルは信用情報に影響する想定です。<br>・条件や施設情報を確認してから申し込んでください。</div><br><button class="btn primary" onclick="modal.classList.add('hidden');openRequestForm()">同意して進む</button><button class="btn light" style="margin-top:10px" onclick="modal.classList.add('hidden')">戻る</button></div></div>`;modal.classList.remove("hidden")}
+function openRequestForm(){let p=posts().find(x=>x.id==currentPost),s=session();requestBody.innerHTML=`<div class="card"><h3>対戦希望</h3><div class="small">${p.team} / ${p.date} / ${p.slot}</div></div><div class="card"><div class="stack"><div><label>申込チーム</label><input value="${s.team}" readonly></div><div><label>担当者名</label><input id="rManager" value="${s.manager||''}"></div><div><label>LINE URL</label><input id="rLine"></div><div><label>メール</label><input id="rMail"></div><div><label>メッセージ</label><textarea id="rComment" placeholder="例：ぜひお願いします。"></textarea></div><button class="btn primary" onclick="sendRequest()">申込を送る</button><button class="btn light" onclick="openDetail('${p.id}')">戻る</button></div></div>`;go("request")}
+function sendRequest(){let s=session(),p=posts().find(x=>x.id==currentPost),m=rManager.value.trim(),l=rLine.value.trim(),e=rMail.value.trim(),c=rComment.value.trim();if(!m)return alert("担当者名を入力してください");if(!l&&!e)return alert("LINEかメールどちらか入力してください");if(p.owner==s.team)return alert("自分の募集には申込できません");let rs=requests();if(rs.some(r=>r.postId==p.id&&r.team==s.team))return alert("この募集には申込済みです");rs.push({id:String(Date.now()),postId:p.id,team:s.team,manager:m,line:l,mail:e,comment:c,status:"申請中",trust:80,jba:s.jba||"あり"});setRequests(rs);alert("対戦希望を送りました");openDetail(p.id)}
+function savePost(){let s=session();if(!pDate.value)return alert("日付を選んでください");if(!ownerLine.value.trim()&&!ownerMail.value.trim())return alert("LINEかメールどちらか入力してください");let ps=posts();ps.push({id:String(Date.now()),team:s.team,owner:s.team,date:pDate.value,slot:slot.value,city:city.value,gender:gender.value,cat:cat.value,kind:kind.value,wanted:Number(wanted.value),level:level.value,entryCondition:entryCondition.value,jbaCondition:jbaCondition.value,jba:s.jba||"あり",gym:gym.value,fee:fee.value,parking:parking.value,line:ownerLine.value,mail:ownerMail.value,contact:contactNote.value,note:note.value,status:"active",trust:80,verified:true,cancel:0,match:0});setPosts(ps);alert("募集を登録しました");go("mypage")}
+function renderMine(){let s=session(),arr=posts().filter(p=>p.owner==s.team);mine.innerHTML=arr.length?arr.map(p=>`<div class="card"><div class="title">${p.team}</div><div class="small">${p.date} / ${p.slot} / ${p.city}</div><div class="chips">${statusChip(p)}<span class="chip">${p.kind}</span><span class="chip">残り${remain(p)}枠</span>${facilityChips(p)}${conditionChips(p)}</div>${p.status=="active"?`<button class="btn danger" style="margin-top:12px" onclick="cancelPost('${p.id}')">募集を取りやめる</button>`:""}</div>`).join(""):'<div class="card empty">まだ自分の募集はありません</div>'}
+function renderReqs(){let s=session(),mineIds=posts().filter(p=>p.owner==s.team).map(p=>p.id),arr=requests().filter(r=>mineIds.includes(r.postId));reqs.innerHTML=arr.length?arr.map(r=>`<div class="card"><div class="title">${r.team}</div><div class="small">${r.comment||"コメントなし"}</div><div class="chips"><span class="chip ok">信頼 ${r.trust}</span><span class="chip ${r.jba=='あり'?'ok':'warn'}">JBA ${r.jba}</span><span class="chip">${r.status}</span></div>${r.status=="申請中"?`<div class="row" style="margin-top:12px"><button class="btn okb inline" onclick="updateRequest('${r.id}','承認')">承認</button><button class="btn warnb inline" onclick="updateRequest('${r.id}','却下')">却下</button></div>`:""}</div>`).join(""):'<div class="card empty">まだ届いた希望はありません</div>'}
+function updateRequest(id,st){let rs=requests(),r=rs.find(x=>x.id==id);setRequests(rs.map(x=>x.id==id?{...x,status:st}:x));if(st=="承認"){let ps=posts(),p=ps.find(x=>x.id==r.postId);if(remain(p)<=1)setPosts(ps.map(x=>x.id==p.id?{...x,status:"full"}:x))}renderReqs();renderMine();renderList();alert(st+"しました")}
+function cancelPost(id){if(!confirm("この募集を取りやめますか？"))return;setPosts(posts().map(p=>p.id==id?{...p,status:"cancelled",cancel:(p.cancel||0)+1,trust:Math.max(0,(p.trust||80)-10)}:p));renderMine();renderList();alert("募集を取りやめました")}
+function switchTab(t){["Mine","Reqs","Trust"].forEach(n=>{document.getElementById("tab"+n).classList.toggle("on",t==n.toLowerCase());document.getElementById(n.toLowerCase()).classList.toggle("hidden",t!=n.toLowerCase())});if(t=="mine")renderMine();if(t=="reqs")renderReqs()}
+function choice(id,el){document.querySelectorAll("#"+id+"G .cbtn").forEach(b=>b.classList.remove("on"));el.classList.add("on");document.getElementById(id).value=el.dataset.v}
+function updateKindOptions(){let k=kind.value;wanted.innerHTML="";let nums=(k=="カップ戦")?[4,6,8]:(k=="大会")?[8,12,16]:[2,3,4];nums.forEach(n=>{let o=document.createElement("option");o.value=n;o.textContent=n+"チーム";if((k=="カップ戦"&&n==8)||(k=="大会"&&n==8)||((k!="カップ戦"&&k!="大会")&&n==3))o.selected=true;wanted.appendChild(o)});cupOptions.classList.toggle("hidden",!(k=="カップ戦"||k=="大会"))}
+function hideAll(){["login","setup","home","list","post","mypage","detail","request"].forEach(id=>document.getElementById(id).classList.add("hidden"))}
+function show(id){document.getElementById(id).classList.remove("hidden")}
+function go(id){hideAll();show(id);["Home","List","Post","My"].forEach(n=>document.getElementById("nav"+n).classList.remove("on"));if(id=="home"){navHome.classList.add("on");renderHome()}if(id=="list"){navList.classList.add("on");renderList()}if(id=="post"){navPost.classList.add("on");updateKindOptions()}if(id=="mypage"){navMy.classList.add("on");switchTab("mine");renderMine();renderReqs()}}
+init();
+</script>
+</body>
+</html>
