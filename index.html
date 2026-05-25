@@ -1,148 +1,349 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Basket Match</title>
 <style>
-body{font-family:sans-serif;background:#f5f5f5;margin:0}
-.app{max-width:420px;margin:auto;padding:16px}
-h1{font-size:28px;margin-bottom:12px}
-.nav{display:flex;gap:8px;margin-bottom:16px}
-.nav button{flex:1;padding:12px;border-radius:999px;border:none;background:#ddd;font-weight:bold}
-.nav .on{background:#3150d4;color:#fff}
-
-.page{display:none}
-.page.on{display:block}
-
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px}
-.choice button{margin:4px;padding:10px 14px;border-radius:999px;border:1px solid #ccc}
-.choice .on{background:#3150d4;color:#fff}
-
-.btn{width:100%;padding:14px;border:none;border-radius:12px;background:#3150d4;color:#fff;font-size:18px}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:#f4f6f8;color:#111}
+header{position:sticky;top:0;background:#fff;padding:14px;border-bottom:1px solid #ddd;z-index:10}
+h1{margin:0;font-size:24px}
+.counter{margin-top:6px;font-size:14px;color:#555}
+.counter b{font-size:20px;color:#2f55d4}
+.tabs{display:flex;gap:6px;margin-top:12px;overflow-x:auto}
+.tab{white-space:nowrap;padding:10px 14px;border-radius:999px;background:#eee;color:#2878ff;font-weight:700;font-size:14px}
+.tab.active{background:#2f55d4;color:#fff}
+.page{display:none;padding:16px}
+.page.active{display:block}
+.card{background:#fff;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.title{font-size:21px;font-weight:800;margin-bottom:8px}
+.row{font-size:15px;color:#555;margin:5px 0}
+.trust{font-size:18px;color:#f5a400;font-weight:800}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.badge{background:#eef2ff;color:#2f55d4;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700}
+.label{font-size:19px;font-weight:800;margin:16px 0 8px}
+input,textarea,select{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:10px;padding:12px;font-size:16px;background:#fff}
+textarea{min-height:90px}
+button{width:100%;border:0;background:#2f55d4;color:#fff;font-size:18px;padding:14px;border-radius:12px;margin-top:12px;font-weight:700}
+button.sub{background:#666}
+.note{font-size:14px;color:#666;line-height:1.6}
+.filterBox{background:#fff;border-radius:16px;padding:14px;margin-bottom:14px}
+.filterGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.empty{padding:18px;background:#fff;border-radius:16px;color:#666}
 </style>
 </head>
+
 <body>
-<div class="app">
-
+<header>
 <h1>Basket Match</h1>
+<div class="counter">登録チーム数：<b id="teamCount">0</b> チーム　｜　募集中：<b id="matchCount">0</b> 件</div>
+<div class="tabs">
+  <div class="tab active" onclick="showPage('team',this)">チーム登録</div>
+  <div class="tab" onclick="showPage('list',this)">試合を探す</div>
+  <div class="tab" onclick="showPage('post',this)">試合を募集</div>
+  <div class="tab" onclick="showPage('status',this)">自チーム情報</div>
+</div>
+</header>
 
-<div class="nav">
-<button id="b1" class="on" onclick="tab('team')">チーム登録</button>
-<button id="b2" onclick="tab('list')">試合を探す</button>
-<button id="b3" onclick="tab('post')">試合募集</button>
-<button id="b4" onclick="tab('info')">チーム情報</button>
+<div id="team" class="page active">
+  <div class="card">
+    <div class="title">チーム登録</div>
+
+    <div class="label">チーム名</div>
+    <input id="teamName" placeholder="例：EPIC BASKETBALL">
+
+    <div class="label">代表者名</div>
+    <input id="leaderName" placeholder="例：大西">
+
+    <div class="label">活動地域</div>
+    <select id="teamArea">
+      <option>神戸</option><option>阪神</option><option>東播</option><option>西播</option>
+      <option>北播</option><option>丹波</option><option>但馬</option><option>淡路</option>
+    </select>
+
+    <div class="label">JBA登録</div>
+    <select id="teamJba">
+      <option>あり</option><option>なし</option>
+    </select>
+
+    <div class="label">連絡先メール</div>
+    <input id="teamEmail" type="email" placeholder="example@gmail.com">
+
+    <button onclick="saveTeam()">チーム登録する</button>
+    <p class="note" id="teamStatus"></p>
+  </div>
 </div>
 
-<!-- チーム登録 -->
-<div id="team" class="page on">
-<div class="card">
-<h2>チーム登録</h2>
-
-<label>チーム名</label>
-<input id="teamName">
-
-<label>地域</label>
-<div class="choice" id="area">
-<button class="on" onclick="sel('area',this)">神戸</button>
-<button onclick="sel('area',this)">阪神</button>
-<button onclick="sel('area',this)">東播</button>
-<button onclick="sel('area',this)">西播</button>
-</div>
-
-<label>JBA登録</label>
-<div class="choice" id="jba">
-<button class="on" onclick="sel('jba',this)">あり</button>
-<button onclick="sel('jba',this)">なし</button>
-</div>
-
-<button class="btn" onclick="saveTeam()">登録</button>
-</div>
-</div>
-
-<!-- 募集一覧 -->
 <div id="list" class="page">
-<div class="card">
-<h2>4/29 練習試合</h2>
-地域：阪神 / U12 / 県中位
-</div>
+  <div class="filterBox">
+    <div class="label" style="margin-top:0">絞り込み</div>
+    <div class="filterGrid">
+      <select id="fArea" onchange="renderMatches()">
+        <option value="">地域すべて</option><option>神戸</option><option>阪神</option><option>東播</option><option>西播</option><option>北播</option><option>丹波</option><option>但馬</option><option>淡路</option>
+      </select>
+      <select id="fCat" onchange="renderMatches()">
+        <option value="">カテゴリーすべて</option><option>U12</option><option>U11</option><option>U10</option><option>U9</option>
+      </select>
+      <select id="fType" onchange="renderMatches()">
+        <option value="">試合種別すべて</option><option>練習試合</option><option>大会</option>
+      </select>
+      <select id="fLevel" onchange="renderMatches()">
+        <option value="">レベルすべて</option><option>県上位</option><option>県中位</option><option>市内</option><option>地域</option>
+      </select>
+    </div>
+  </div>
+  <div id="matchList"></div>
 </div>
 
-<!-- 募集 -->
+<div id="detail" class="page">
+  <div class="card">
+    <div class="title" id="dTitle"></div>
+    <div class="trust">★★★★☆ 4.5</div>
+    <div id="dContent"></div>
+    <button>対戦希望を送る</button>
+    <button class="sub" onclick="showPageById('list')">一覧に戻る</button>
+  </div>
+</div>
+
 <div id="post" class="page">
-<div class="card">
-<h2>試合募集</h2>
+  <div class="card">
+    <div class="title">試合を募集</div>
 
-<label>日付</label>
-<input type="date" id="date">
+    <div class="label">主催チーム</div>
+    <select id="postTeam"></select>
 
-<label>希望チーム数</label>
-<div class="choice" id="teams">
-<button class="on" onclick="sel('teams',this)">1</button>
-<button onclick="sel('teams',this)">2</button>
-<button onclick="sel('teams',this)">3</button>
-<button onclick="sel('teams',this)">4</button>
-<button onclick="sel('teams',this)">5</button>
-<button onclick="sel('teams',this)">6</button>
-<button onclick="sel('teams',this)">7</button>
-<button onclick="sel('teams',this)">8</button>
+    <div class="label">日付</div>
+    <input id="postDate" type="date">
+
+    <div class="label">地域</div>
+    <select id="postArea">
+      <option>神戸</option><option>阪神</option><option>東播</option><option>西播</option>
+      <option>北播</option><option>丹波</option><option>但馬</option><option>淡路</option>
+    </select>
+
+    <div class="label">カテゴリー</div>
+    <select id="postCat">
+      <option>U12</option><option>U11</option><option>U10</option><option>U9</option>
+    </select>
+
+    <div class="label">試合の種類</div>
+    <select id="postType">
+      <option>練習試合</option><option>大会</option>
+    </select>
+
+    <div class="label">レベル</div>
+    <select id="postLevel">
+      <option>県上位</option><option>県中位</option><option>市内</option><option>地域</option>
+    </select>
+
+    <div class="label">募集チーム数</div>
+    <select id="postTeams">
+      <option>1</option><option>2</option><option>3</option><option>4</option>
+      <option>5</option><option>6</option><option>7</option><option>8</option>
+    </select>
+
+    <div class="label">JBA登録</div>
+    <select id="postJba">
+      <option>あり</option><option>なし</option><option>どちらでも可</option>
+    </select>
+
+    <div class="label">参加費</div>
+    <p class="note">承認後に連絡</p>
+
+    <div class="label">詳細・備考</div>
+    <textarea id="postNote" placeholder="会場、時間、条件など"></textarea>
+
+    <button onclick="saveMatch()">募集を登録する</button>
+    <p class="note" id="postStatus"></p>
+  </div>
 </div>
 
-<button class="btn" onclick="save()">登録</button>
-</div>
-</div>
+<div id="status" class="page">
+  <div class="card">
+    <div class="title">自チーム情報</div>
+    <div class="trust">★★★★☆ 4.5</div>
 
-<!-- チーム情報 -->
-<div id="info" class="page">
-<div class="card">
-<h2>チーム情報</h2>
+    <div class="row">チーム名：<span id="statusTeamName">未登録</span></div>
+    <div class="row">代表者名：<span id="statusLeader">未登録</span></div>
+    <div class="row">活動地域：<span id="statusArea">未登録</span></div>
+    <div class="row">JBA登録：<span id="statusJba">未登録</span></div>
+    <div class="row">掲載中の募集：<span id="statusMatchCount">0</span> 件</div>
 
-<div id="teamView">未登録</div>
+    <hr>
 
-<hr>
-
-<h3>信頼ポイント</h3>
-<p>
-・返信の早さ<br>
-・承認率<br>
-・トラブルの少なさ<br>
-</p>
-
-</div>
-</div>
-
+    <div class="title">信頼ポイントとは</div>
+    <p class="note">対戦相手を選ぶときの安心材料です。強さではなく、運営面の信頼度を表します。</p>
+    <div class="row">・返信が早い</div>
+    <div class="row">・承認／却下の判断が早い</div>
+    <div class="row">・直前キャンセルが少ない</div>
+    <div class="row">・会場や時間の連絡が分かりやすい</div>
+    <div class="row">・過去の対戦後レビューが良い</div>
+    <p class="note">※現在は試作版。実運用ではレビューや履歴から反映する想定。</p>
+  </div>
 </div>
 
 <script>
-function tab(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'))
-document.getElementById(id).classList.add('on')
+let team = JSON.parse(localStorage.getItem("team") || "null");
+let matches = JSON.parse(localStorage.getItem("matches") || "[]");
 
-document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'))
-event.target.classList.add('on')
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  refresh();
 }
 
-function sel(id,btn){
-document.querySelectorAll('#'+id+' button').forEach(b=>b.classList.remove('on'))
-btn.classList.add('on')
+function showPageById(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+
+  let label = "";
+  if(id==="team") label="チーム登録";
+  if(id==="list") label="試合を探す";
+  if(id==="post") label="試合を募集";
+  if(id==="status") label="自チーム情報";
+
+  document.querySelectorAll('.tab').forEach(t=>{
+    if(t.textContent.includes(label)) t.classList.add('active');
+  });
+
+  refresh();
 }
 
 function saveTeam(){
-let name=document.getElementById('teamName').value
-localStorage.setItem("team",name)
-alert("登録OK")
+  const name=document.getElementById("teamName").value.trim();
+  const leader=document.getElementById("leaderName").value.trim();
+  const area=document.getElementById("teamArea").value;
+  const jba=document.getElementById("teamJba").value;
+  const email=document.getElementById("teamEmail").value.trim();
+
+  if(!name || !leader || !email){
+    alert("チーム名、代表者名、メールは入力してください");
+    return;
+  }
+
+  team={name,leader,area,jba,email};
+  localStorage.setItem("team",JSON.stringify(team));
+  document.getElementById("teamStatus").textContent="登録しました。試合募集でこのチームを使えます。";
+  refresh();
 }
 
-function save(){
-let d=document.getElementById("date").value
-let today=new Date().toISOString().split('T')[0]
-if(d<today){alert("過去NG");return}
-alert("登録OK")
+function saveMatch(){
+  if(!team){
+    alert("先にチーム登録をしてください");
+    showPageById("team");
+    return;
+  }
+
+  const match={
+    id:Date.now(),
+    teamName:team.name,
+    date:document.getElementById("postDate").value,
+    area:document.getElementById("postArea").value,
+    cat:document.getElementById("postCat").value,
+    type:document.getElementById("postType").value,
+    level:document.getElementById("postLevel").value,
+    teams:document.getElementById("postTeams").value,
+    jba:document.getElementById("postJba").value,
+    note:document.getElementById("postNote").value
+  };
+
+  if(!match.date){
+    alert("日付を入力してください");
+    return;
+  }
+
+  matches.unshift(match);
+  localStorage.setItem("matches",JSON.stringify(matches));
+  document.getElementById("postStatus").textContent="募集を登録しました。試合を探すに表示されます。";
+  renderMatches();
+  refresh();
 }
 
-let t=localStorage.getItem("team")
-if(t)document.getElementById("teamView").innerText=t
+function renderMatches(){
+  const area=document.getElementById("fArea")?.value || "";
+  const cat=document.getElementById("fCat")?.value || "";
+  const type=document.getElementById("fType")?.value || "";
+  const level=document.getElementById("fLevel")?.value || "";
+
+  const list=document.getElementById("matchList");
+  if(!list) return;
+
+  const filtered=matches.filter(m=>
+    (!area || m.area===area) &&
+    (!cat || m.cat===cat) &&
+    (!type || m.type===type) &&
+    (!level || m.level===level)
+  );
+
+  if(filtered.length===0){
+    list.innerHTML='<div class="empty">現在、条件に合う募集はありません。</div>';
+    return;
+  }
+
+  list.innerHTML=filtered.map(m=>`
+    <div class="card">
+      <div class="title">${m.date} ${m.type}</div>
+      <div class="trust">★★★★☆ 4.5</div>
+      <div class="row"><b>主催チーム：${m.teamName}</b></div>
+      <div class="row">地域：${m.area}　カテゴリー：${m.cat}</div>
+      <div class="row">レベル：${m.level}　募集：${m.teams}チーム　JBA：${m.jba}</div>
+      <div class="row">参加費：承認後に連絡</div>
+      <div class="badges"><span class="badge">登録チーム</span><span class="badge">詳細確認可</span></div>
+      <button onclick="openDetail(${m.id})">詳細を見る</button>
+    </div>
+  `).join("");
+}
+
+function openDetail(id){
+  const m=matches.find(x=>x.id===id);
+  if(!m) return;
+
+  document.getElementById("dTitle").textContent=`${m.date} ${m.type}`;
+  document.getElementById("dContent").innerHTML=`
+    <div class="row"><b>主催チーム：${m.teamName}</b></div>
+    <div class="row">地域：${m.area}</div>
+    <div class="row">カテゴリー：${m.cat}</div>
+    <div class="row">試合種別：${m.type}</div>
+    <div class="row">レベル：${m.level}</div>
+    <div class="row">募集チーム数：${m.teams}</div>
+    <div class="row">JBA登録：${m.jba}</div>
+    <div class="row">参加費：承認後に連絡</div>
+    <div class="row">詳細：${m.note || "未入力"}</div>
+    <p class="note">対戦希望を送った後、主催者が承認または却下します。</p>
+  `;
+  showPageById("detail");
+}
+
+function refresh(){
+  document.getElementById("teamCount").textContent=team ? "1" : "0";
+  document.getElementById("matchCount").textContent=matches.length;
+
+  if(team){
+    document.getElementById("teamName").value=team.name;
+    document.getElementById("leaderName").value=team.leader;
+    document.getElementById("teamArea").value=team.area;
+    document.getElementById("teamJba").value=team.jba;
+    document.getElementById("teamEmail").value=team.email;
+  }
+
+  const postTeam=document.getElementById("postTeam");
+  if(postTeam){
+    postTeam.innerHTML=team ? `<option>${team.name}</option>` : `<option>先にチーム登録してください</option>`;
+  }
+
+  document.getElementById("statusTeamName").textContent=team ? team.name : "未登録";
+  document.getElementById("statusLeader").textContent=team ? team.leader : "未登録";
+  document.getElementById("statusArea").textContent=team ? team.area : "未登録";
+  document.getElementById("statusJba").textContent=team ? team.jba : "未登録";
+  document.getElementById("statusMatchCount").textContent=matches.length;
+
+  renderMatches();
+}
+
+refresh();
 </script>
-
 </body>
 </html>
